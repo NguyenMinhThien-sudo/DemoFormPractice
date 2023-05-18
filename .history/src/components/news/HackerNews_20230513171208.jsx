@@ -1,0 +1,26 @@
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+
+const HackerNews = () => {
+  const [hits, setHits] = useState([]);
+  const [query, setQuery] = useState("react");
+  const handleGetHackerNews = useRef({});
+  const handleGetHackerNews = async () => {
+    const response = await axios.get(
+      `https://hn.algolia.com/api/v1/search?query=${query}`
+    );
+    setHits(response.data?.hits);
+  };
+  useEffect(() => {
+    handleGetHackerNews();
+  }, []);
+  return (
+    <div>
+      {hits.length > 0 &&
+        hits.map((item) => <h3 key={item.title}>{item.title}</h3>)}
+    </div>
+  );
+};
+
+export default HackerNews;
+// https://hn.algolia.com/api/v1/search?query=react
